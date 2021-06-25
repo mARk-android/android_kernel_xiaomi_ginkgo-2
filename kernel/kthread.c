@@ -1031,6 +1031,10 @@ static void kthread_cancel_delayed_work_timer(struct kthread_work *work,
  */
 static bool __kthread_cancel_work(struct kthread_work *work)
 {
+	/* Try to cancel the timer if exists. */
+	if (is_dwork)
+		kthread_cancel_delayed_work_timer(work, flags);
+
 	/*
 	 * Try to remove the work from a worker list. It might either
 	 * be from worker->work_list or from worker->delayed_work_list.
